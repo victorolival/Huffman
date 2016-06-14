@@ -42,8 +42,55 @@ public class HuffmanExemplo {
         }
         
         Lista nos = new Lista();
-        //parte 2 - cria lista de nós 
+        //parte 2 - cria lista de nós
+        for (int i= 0; i < 256; i++){
+            if(freq[i]>0){
+                Node no = new Node();
+                no.setFreq(freq[i]);
+                no.setCaracter((char)i);
+                nos.inserir(no);
+            }
+        }
         
+        Node noaux1,noaux2 = new Node();
+        noaux1 = null;
+        noaux2 = null;
+        int ind=0;
+        noaux1.setFreq(Integer.MAX_VALUE);
+        noaux2.setFreq(Integer.MAX_VALUE);
+        
+        while (nos.tamanho() != 1){
+            for (int i=0; i< nos.tamanho(); i++){
+                if(nos.get(i).getFreq() < noaux1.getFreq()){
+                    noaux1 = nos.get(i);
+                    ind = i;
+                }
+            }
+            nos.remover(ind);
+
+            for (int i=0; i< nos.tamanho(); i++){
+                if(nos.get(i).getFreq() < noaux2.getFreq()){
+                    noaux2 = nos.get(i);
+                    ind = i;
+                }
+            }
+            nos.remover(ind);
+
+            Node no = new Node();
+            if (noaux1.getFreq() < noaux2.getFreq()){
+                no.setEsq(noaux1);
+                no.setDir(noaux2);
+                no.setFreq(noaux1.getFreq() + noaux2.getFreq());
+            }
+            else{
+                no.setEsq(noaux2);
+                no.setDir(noaux1);
+                no.setFreq(noaux1.getFreq() + noaux2.getFreq());
+            }
+            nos.inserir(no);
+        
+        }
+                
         //seu código para criar a lista de nós vai aqui
         
          //parte 3 - monta a arvore, iterando sobre a lista até ela ter tamanho 1
