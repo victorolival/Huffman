@@ -59,7 +59,7 @@ public class HuffmanExemplo {
         noaux1.setFreq(Integer.MAX_VALUE);
         noaux2.setFreq(Integer.MAX_VALUE);
         
-        while (nos.tamanho() != 1){
+        while (nos.tamanho() > 1){
             for (int i=0; i< nos.tamanho(); i++){
                 if(nos.get(i).getFreq() < noaux1.getFreq()){
                     noaux1 = nos.get(i);
@@ -90,7 +90,9 @@ public class HuffmanExemplo {
             nos.inserir(no);
         
         }
-                
+        
+        this.raiz = nos.get(0);
+        this.print();
         //seu código para criar a lista de nós vai aqui
         
          //parte 3 - monta a arvore, iterando sobre a lista até ela ter tamanho 1
@@ -114,6 +116,13 @@ public class HuffmanExemplo {
         //codigos['a'][4] = 1;
         int codigos[][] = new int[256][];
         
+        Node nofolha = new Node();
+        nofolha = raiz;
+        
+        while(nofolha.ehFolha() != true){
+            
+        }
+            
         //parte 6 - preencher a tabela de códigos percorrendo a arvore, guardando o caminho em 
         //pilha e atualizando a tabela sempre que encontrar um nó folha
         //fiz um metodo auxiliar da pilha, para que seja possivel obter 
