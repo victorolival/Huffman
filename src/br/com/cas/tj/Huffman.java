@@ -163,23 +163,8 @@ public class Huffman {
         printAux(no.getEsq(), nivel+1);
         printAux(no.getDir(), nivel+1);
     }
-    private int[] percursoEmOrdem (Node no, Pilha pilha) {
-        if (no.getEsq()!=null){
-            pilha.push(0);
-            if(!no.getEsq().ehFolha()){
-                percursoEmOrdem(no.getEsq(),pilha);
-            }
-            return pilha.fotografiaPilha();
-        }
-        if (no.getDir()!=null){
-            pilha.push(1);
-            if(!no.getDir().ehFolha()){
-                percursoEmOrdem(no.getDir(),pilha);
-            }
-            return pilha.fotografiaPilha();
-        }
-        return null;
-    }
+    
+    
     
     
     

@@ -56,25 +56,13 @@ public class HuffmanExemplo {
         noaux1 = null;
         noaux2 = null;
         int ind=0;
-        noaux1.setFreq(Integer.MAX_VALUE);
-        noaux2.setFreq(Integer.MAX_VALUE);
+        //noaux1.setFreq(Integer.MAX_VALUE);
+        //noaux2.setFreq(Integer.MAX_VALUE);
         
         while (nos.tamanho() > 1){
-            for (int i=0; i< nos.tamanho(); i++){
-                if(nos.get(i).getFreq() < noaux1.getFreq()){
-                    noaux1 = nos.get(i);
-                    ind = i;
-                }
-            }
-            nos.remover(ind);
-
-            for (int i=0; i< nos.tamanho(); i++){
-                if(nos.get(i).getFreq() < noaux2.getFreq()){
-                    noaux2 = nos.get(i);
-                    ind = i;
-                }
-            }
-            nos.remover(ind);
+            noaux1 = removeMenorFrequencia(nos);
+            noaux2 = removeMenorFrequencia(nos);
+            
 
             Node no = new Node();
             if (noaux1.getFreq() < noaux2.getFreq()){
@@ -124,7 +112,9 @@ public class HuffmanExemplo {
         //os valores da pilha sem ter que desempilhar e empilhar tudo denovo
         //método - int[] fotografiaPilha ()
         Pilha pilha = new Pilha ();
-       
+        
+        atualizaMatriz(raiz, pilha, codigos);
+        
         //seu código para obter os códigos de cada caracter vai aqui
         
         //CODIGO ILUSTRATIVO, NAO PRECISA ESTAR NA VERSAO FINAL
@@ -262,5 +252,24 @@ public class HuffmanExemplo {
         }
         printAux(no.getEsq(), nivel+1);
         printAux(no.getDir(), nivel+1);
+    }
+    
+    private void atualizaMatriz(Node no,Pilha pilha, int codigos[][]){
+        if(!no.ehFolha()){
+            if(no.getEsq() != null){
+                pilha.push(0);
+                atualizaMatriz(no.getEsq(),pilha,codigos);
+                pilha.pop();
+                
+            }
+            if(no.getDir() != null){
+                pilha.push(1);
+                atualizaMatriz(no.getDir(),pilha,codigos);
+                pilha.pop();
+            }
+        }
+        else{
+            codigos[no.getCaracter()]= pilha.fotografiaPilha();
+        }
     }
 }
