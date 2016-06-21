@@ -116,12 +116,7 @@ public class HuffmanExemplo {
         //codigos['a'][4] = 1;
         int codigos[][] = new int[256][];
         
-        Node nofolha = new Node();
-        nofolha = raiz;
         
-        while(nofolha.ehFolha() != true){
-            
-        }
             
         //parte 6 - preencher a tabela de códigos percorrendo a arvore, guardando o caminho em 
         //pilha e atualizando a tabela sempre que encontrar um nó folha
