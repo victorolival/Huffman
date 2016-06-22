@@ -45,6 +45,7 @@ public class HuffmanExemplo {
         //parte 2 - cria lista de nós
         //Nesse for ele percorre o vetor de frequencia e inseri na lista de nós o nó com a frequencia e o caracter
         for (int i= 0; i < 256; i++){
+            //só inseri se o caracter tiver frequencia maior que zero
             if(freq[i]>0){
                 Node no = new Node();
                 no.setFreq(freq[i]);
@@ -58,26 +59,30 @@ public class HuffmanExemplo {
         noaux2 = null;
         
        
-        //Enquanto o tamanho da lista for maior que 1 ele retira os menores
+        //Enquanto o tamanho da lista for maior que 1 ele grava os 2 nós que possuem menor frequencia em um novo nó e inseri esse novo nó na lista
         while (nos.tamanho() > 1){
             noaux1 = removeMenorFrequencia(nos);
             noaux2 = removeMenorFrequencia(nos);
             
 
             Node no = new Node();
+            //nesse if ele verifica se a frequencia do noaux1 é menor que a do noaux2 e inseri a esquerda 
             if (noaux1.getFreq() < noaux2.getFreq()){
                 no.setEsq(noaux1);
                 no.setDir(noaux2);
                 no.setFreq(noaux1.getFreq() + noaux2.getFreq());
             }
+            //aqui se o noaux1 for maior ele inseri a esquerda
             else{
                 no.setEsq(noaux2);
                 no.setDir(noaux1);
                 no.setFreq(noaux1.getFreq() + noaux2.getFreq());
             }
+            //a frequencia do novo nó é a soma dos dois nós de menor frequencia
             nos.inserir(no);
-        
+            
         }
+        //atualiza a raiz com o nó que sobrou da lista
         
         this.raiz = nos.get(0);
         this.print();
@@ -187,7 +192,9 @@ public class HuffmanExemplo {
         //parte 4 - monteagem da arvore - cria lista de nós com a informacao da tabela de frequencia
         Lista nos = new Lista();
         //seu código de montagem da lista vai aqui
+        //Nesse for ele percorre o vetor de frequencia e inseri na lista de nós o nó com a frequencia e o caracter
         for (int i= 0; i < 256; i++){
+            //só inseri se o caracter tiver frequencia maior que zero
             if(freq[i]>0){
                 Node no = new Node();
                 no.setFreq(freq[i]);
@@ -199,50 +206,63 @@ public class HuffmanExemplo {
         Node noaux1,noaux2 = new Node();
         noaux1 = null;
         noaux2 = null;
-        int ind=0;
         
+       
+        //Enquanto o tamanho da lista for maior que 1 ele grava os 2 nós que possuem menor frequencia em um novo nó e inseri esse novo nó na lista
         while (nos.tamanho() > 1){
             noaux1 = removeMenorFrequencia(nos);
             noaux2 = removeMenorFrequencia(nos);
             
 
             Node no = new Node();
+            //nesse if ele verifica se a frequencia do noaux1 é menor que a do noaux2 e inseri a esquerda 
             if (noaux1.getFreq() < noaux2.getFreq()){
                 no.setEsq(noaux1);
                 no.setDir(noaux2);
                 no.setFreq(noaux1.getFreq() + noaux2.getFreq());
             }
+            //aqui se o noaux1 for maior ele inseri a esquerda
             else{
                 no.setEsq(noaux2);
                 no.setDir(noaux1);
                 no.setFreq(noaux1.getFreq() + noaux2.getFreq());
             }
+            //a frequencia do novo nó é a soma dos dois nós de menor frequencia
             nos.inserir(no);
-        
+            
         }
         //seu código de montagem da arvore na lista vai aqui
         
         //parte 6 - atualiza raiz da arvore com o no que restou na lista | this.raiz = nos.get(0);
         //pode imprimir a arvore depois de atualizar a raiz para dar uma conferida
         //this.print ();
+        
+        //atualiza a raiz com o nó que sobrou da lista
         this.raiz = nos.get(0);
         this.print();
         
-        Node noatual = raiz;
+        
+        
         
         //parte 7 - le bit a bit o arquivo binario, percorre a arvore e grava o 
         //caracter encontrado no arquivo de texto        
         
         //exemplo da leitura bit a bit do arquivo
+        //cria um nó para usar ele como auxiliar
+        Node noatual = raiz;
+        //no for ele vai processando até que o i seja igual ao número de bits do arquivo de texto
         for (int i=0; i < numeroDeBitsParaLer; i+=1) {            
             
             int bit = file.leBit();           
+            //verifica se o bit é 0, se for ele atualiza o nó auxiliar com o filho esquerdo do nó atual
             if(bit == 0){
                 noatual = noatual.getEsq();
             }
+            //verifica se o bit é 1, se for ele atualiza o nó auxiliar com o filho direito do nó atual
             else if(bit == 1){
                 noatual = noatual.getDir();
             }
+            //verifica se o nó é folha, se for ele pega o caracter do nó e escreve no txt gerado, depois atualiza o nó auxiliar com o raiz novamente
             if (noatual.ehFolha()){
                 char caracter = noatual.getCaracter();
                 file.escreveCaracter(caracter);
@@ -301,19 +321,28 @@ public class HuffmanExemplo {
     }
     
     private void atualizaMatriz(Node no,Pilha pilha, int codigos[][]){
+        //verifica se o nó não é folha
         if(!no.ehFolha()){
+            //verifica se o filho esquerdo do nó é nulo, se não,
+            //insere na pilha o valor 0 e chama o método novamente,
+            //passando como parametro o filho esquerdo do nó
             if(no.getEsq() != null){
                 pilha.push(0);
                 atualizaMatriz(no.getEsq(),pilha,codigos);
                 pilha.pop();
                 
             }
+            //verifica se o filho direito do nó é nulo, se não,
+            //insere na pilha o valor 1 e chama o método novamente,
+            //passando como parametro o filho direito do nó
             if(no.getDir() != null){
                 pilha.push(1);
                 atualizaMatriz(no.getDir(),pilha,codigos);
                 pilha.pop();
             }
         }
+        //se for folha, ele pega o caracter guardado no nó para inserir na posição correta da matriz,
+        //depois pega a sequencia da pilha e insere na matriz
         else{
             codigos[no.getCaracter()]= pilha.fotografiaPilha();
         }
