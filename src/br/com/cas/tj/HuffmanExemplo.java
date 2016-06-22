@@ -183,25 +183,71 @@ public class HuffmanExemplo {
         
         //parte 3 - monta a arvore de huffman a partir da tabela de frequencia (igual no compactar)
         
+        
         //parte 4 - monteagem da arvore - cria lista de nós com a informacao da tabela de frequencia
         Lista nos = new Lista();
         //seu código de montagem da lista vai aqui
-        
+        for (int i= 0; i < 256; i++){
+            if(freq[i]>0){
+                Node no = new Node();
+                no.setFreq(freq[i]);
+                no.setCaracter((char)i);
+                nos.inserir(no);
+            }
+        }
         //parte 5 - monta a arvore, iterando sobre a lista até ela ter tamanho 1
+        Node noaux1,noaux2 = new Node();
+        noaux1 = null;
+        noaux2 = null;
+        int ind=0;
         
+        while (nos.tamanho() > 1){
+            noaux1 = removeMenorFrequencia(nos);
+            noaux2 = removeMenorFrequencia(nos);
+            
+
+            Node no = new Node();
+            if (noaux1.getFreq() < noaux2.getFreq()){
+                no.setEsq(noaux1);
+                no.setDir(noaux2);
+                no.setFreq(noaux1.getFreq() + noaux2.getFreq());
+            }
+            else{
+                no.setEsq(noaux2);
+                no.setDir(noaux1);
+                no.setFreq(noaux1.getFreq() + noaux2.getFreq());
+            }
+            nos.inserir(no);
+        
+        }
         //seu código de montagem da arvore na lista vai aqui
         
         //parte 6 - atualiza raiz da arvore com o no que restou na lista | this.raiz = nos.get(0);
         //pode imprimir a arvore depois de atualizar a raiz para dar uma conferida
         //this.print ();
+        this.raiz = nos.get(0);
+        this.print();
+        
+        Node noatual = raiz;
         
         //parte 7 - le bit a bit o arquivo binario, percorre a arvore e grava o 
         //caracter encontrado no arquivo de texto        
-       
+        
         //exemplo da leitura bit a bit do arquivo
         for (int i=0; i < numeroDeBitsParaLer; i+=1) {            
+            
             int bit = file.leBit();           
-                
+            if(bit == 0){
+                noatual = noatual.getEsq();
+            }
+            else if(bit == 1){
+                noatual = noatual.getDir();
+            }
+            if (noatual.ehFolha()){
+                char caracter = noatual.getCaracter();
+                file.escreveCaracter(caracter);
+                noatual = raiz;
+            }
             
         }
         
