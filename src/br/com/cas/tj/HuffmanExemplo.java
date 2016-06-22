@@ -43,6 +43,7 @@ public class HuffmanExemplo {
         
         Lista nos = new Lista();
         //parte 2 - cria lista de nós
+        //Nesse for ele percorre o vetor de frequencia e inseri na lista de nós o nó com a frequencia e o caracter
         for (int i= 0; i < 256; i++){
             if(freq[i]>0){
                 Node no = new Node();
@@ -55,10 +56,9 @@ public class HuffmanExemplo {
         Node noaux1,noaux2 = new Node();
         noaux1 = null;
         noaux2 = null;
-        int ind=0;
-        //noaux1.setFreq(Integer.MAX_VALUE);
-        //noaux2.setFreq(Integer.MAX_VALUE);
         
+       
+        //Enquanto o tamanho da lista for maior que 1 ele retira os menores
         while (nos.tamanho() > 1){
             noaux1 = removeMenorFrequencia(nos);
             noaux2 = removeMenorFrequencia(nos);
